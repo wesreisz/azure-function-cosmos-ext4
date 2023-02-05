@@ -1,5 +1,11 @@
 {
     "version": "2.0",
+    "extensions": {
+        "cosmosDB": {
+            "connectionMode": "Gateway",
+            "userAgentSuffix": "reisz"
+        }
+    },
     "logging": {
         "applicationInsights": {
             "samplingSettings": {
