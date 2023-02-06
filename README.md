@@ -1,5 +1,6 @@
 Following these tutorials:
-* https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-csharp?tabs=in-process
-* https://learn.microsoft.com/en-us/azure/azure-functions/functions-add-output-binding-cosmos-db-vs-code?tabs=in-process&pivots=programming-language-csharp
-
-To add authorization, look at this adding keys article: https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger?tabs=in-process%2Cfunctionsv2&pivots=programming-language-csharp#authorization-keys
+There is alot of noise out there for azure functions and cosmosdb. You must
+be using the right extension, sdk, dotnet version for all the pieces to work.
+Make sure you're using the 4.0.0 extension. This is the correct information
+about how to connect: 
+https://devblogs.microsoft.com/cosmosdb/under-the-hood-of-the-new-azure-functions-extension-for-azure-cosmos-db/
