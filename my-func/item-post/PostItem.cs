@@ -15,7 +15,7 @@ namespace com.wesleyreisz.example
     {
         [FunctionName("PostItem")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             [CosmosDB(
                  databaseName: "my-database",
                  containerName: "my-container",
@@ -24,18 +24,16 @@ namespace com.wesleyreisz.example
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            //this gets a value from the query string
-            string name = req.Query["name"];
-
             //this reads the body and deserializes it to json
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
+            
             //this is a shortcut to creating an object. You should create an object
             //structure in the src folder and then use that in your logic. I did this
             //for validation purposes.
-            if (!string.IsNullOrEmpty(name))
+            if (requestBody.Contains("name") && 
+                requestBody.Contains("email") &&
+                requestBody.Contains("phone"))
             {
                 var item = new ToDoItem();
                 // Add a JSON document to the output container.
@@ -43,15 +41,15 @@ namespace com.wesleyreisz.example
                 {
                     // create a random ID
                     id = System.Guid.NewGuid().ToString(),
-                    task = "Create New Record",
-                    assignee = "Justin",
-                    name = name
+                    customerName = data.name,
+                    customerPhone = data.phone,
+                    customerEmail = data.email
                 });
             }
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully and preserved in cosmosdb.";
+            string responseMessage = string.IsNullOrEmpty(data)
+                ? "Please add make this request with name, phone, email"
+                : $"This HTTP triggered function executed successfully and preserved in cosmosdb using {data.name},{data.phone},{data.email} .";
 
             return new OkObjectResult(responseMessage);
         }
