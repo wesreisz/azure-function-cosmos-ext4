@@ -24,12 +24,17 @@ namespace com.wesleyreisz.example
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
+            //this gets a value from the query string
             string name = req.Query["name"];
 
+            //this reads the body and deserializes it to json
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
+            //this is a shortcut to creating an object. You should create an object
+            //structure in the src folder and then use that in your logic. I did this
+            //for validation purposes.
             if (!string.IsNullOrEmpty(name))
             {
                 var item = new ToDoItem();
