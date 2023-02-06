@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using CosmosDBSamplesV2;
 
+//{"name":"Wesley Reisz", "email":"wes@wesleyreisz.com", "phone":"502-802-2361"}
 namespace com.wesleyreisz.example
 {
     public static class PostItem
@@ -35,21 +36,18 @@ namespace com.wesleyreisz.example
                 requestBody.Contains("email") &&
                 requestBody.Contains("phone"))
             {
-                var item = new ToDoItem();
                 // Add a JSON document to the output container.
                 await documentsOut.AddAsync(new
                 {
                     // create a random ID
                     id = System.Guid.NewGuid().ToString(),
-                    customerName = data.name,
-                    customerPhone = data.phone,
-                    customerEmail = data.email
+                    CustomerEmail=data.email,
+                    CustomerName=data.name,
+                    CustomerPhone=data.phone
                 });
             }
 
-            string responseMessage = string.IsNullOrEmpty(data)
-                ? "Please add make this request with name, phone, email"
-                : $"This HTTP triggered function executed successfully and preserved in cosmosdb using {data.name},{data.phone},{data.email} .";
+            string responseMessage = $"This HTTP triggered function executed successfully and preserved in cosmosdb using {data.name},{data.phone},{data.email} .";
 
             return new OkObjectResult(responseMessage);
         }
