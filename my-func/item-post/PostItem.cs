@@ -11,9 +11,9 @@ using CosmosDBSamplesV2;
 
 namespace com.wesleyreisz.example
 {
-    public static class HttpTrigger
+    public static class PostItem
     {
-        [FunctionName("HttpTrigger")]
+        [FunctionName("PostItem")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             [CosmosDB(
