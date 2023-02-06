@@ -7,10 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-
-//TODO: Unable to pass in the cosmosdb connection string into this code. It fails everytime.
-//The first issue was using 4.0.0 I dropped it down to 3.0.10 and it runs but I get a null
-//for the connection string. Stuck here until this is solved.
+using CosmosDBSamplesV2;
 
 namespace com.wesleyreisz.example
 {
@@ -35,6 +32,7 @@ namespace com.wesleyreisz.example
 
             if (!string.IsNullOrEmpty(name))
             {
+                var item = new ToDoItem();
                 // Add a JSON document to the output container.
                 await documentsOut.AddAsync(new
                 {
