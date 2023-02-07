@@ -12,9 +12,9 @@ using CosmosDBSamplesV2;
 //{"name":"Wesley Reisz", "email":"wes@wesleyreisz.com", "phone":"502-802-2361"}
 namespace com.wesleyreisz.example
 {
-    public static class PostItem
+    public static class PostCustomer
     {
-        [FunctionName("PostItem")]
+        [FunctionName("PostCustomer")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             [CosmosDB(
