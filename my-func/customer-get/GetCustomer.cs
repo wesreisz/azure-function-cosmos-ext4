@@ -31,9 +31,11 @@ namespace com.wesleyreisz.example
             // - how do you query for a subset of data? look at using where c.CustomerName = 'Justin Reisz'
             // - what are the ramifications of using a * in the select statement?
            
+
             log.LogInformation("Triggering Get Customer");
             foreach (Customer customer in customers)
             {
+                if (customer.Id == null)
                 log.LogInformation($"Found Customer: {customer.CustomerName} {customer.Id})");
             }
             //TODO: Information on how to talk to CosmosDB using Extensions 4.0
