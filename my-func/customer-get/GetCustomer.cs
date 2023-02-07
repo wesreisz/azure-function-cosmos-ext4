@@ -21,20 +21,19 @@ namespace com.wesleyreisz.example
                 databaseName: "my-database",
                 containerName: "my-container",
                 Connection = "CosmosDbConnectionString",
-                SqlQuery = "SELECT top 2 * FROM c order by c._ts desc")]
+                SqlQuery = "SELECT * FROM c where c.CustomerName = 'Justin Reisz'")]
                 IEnumerable<Customer> customers,
             ILogger log)
             {
            
-            log.LogInformation("C# HTTP trigger function processed a request.");
-            string json = "";
+            log.LogInformation("Triggering Get Customer");
             foreach (Customer customer in customers)
             {
-                log.LogInformation(customer.CustomerName);
+                log.LogInformation($"Found Customer: {customer.CustomerName} {customer.Id})");
             }
-            //TODO: How do I deserialize customers into a list of objects and return it.
+            //TODO: Information on how to talk to CosmosDB using Extensions 4.0
             //check this page: https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-input?tabs=in-process%2Cfunctionsv2&pivots=programming-language-csharp#http-trigger-get-multiple-docs-using-sqlquery-c
-            return Task.FromResult(json);
+            return Task.FromResult(JsonConvert.SerializeObject(customers));
         }
     }
 }
