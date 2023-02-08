@@ -19,7 +19,7 @@ public static class DeleteCustomer
 {
     [FunctionName("DeleteCustomer")]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "DeleteCustomer/{id}")] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteCustomer/{id}")] HttpRequest req,
         string id,
         [CosmosDB(
             databaseName: "my-database",
