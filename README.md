@@ -7,3 +7,12 @@ https://devblogs.microsoft.com/cosmosdb/under-the-hood-of-the-new-azure-function
 
 
 You can test is with: curl http://localhost:7071/api/HttpTrigger -d '{"name":"Justin Reisz"}'
+
+
+## Notes
+If you run into issues debugging, uninstall and reinstalling the azure function cli from npm:
+`npm i -g azure-functions-core-tools@4`
+
+Check the version
+`func --version`
+4.0.4915

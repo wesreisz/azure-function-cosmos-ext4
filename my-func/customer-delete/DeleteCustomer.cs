@@ -28,20 +28,19 @@ public static class DeleteCustomer
         ILogger log)
     {
         log.LogInformation("Delete function processed a request.");
-
-        var database = cosmosClient.GetDatabase("my-database");
-        var container = database.GetContainer("my-container");
+        Container container = cosmosClient.GetDatabase("my-database").GetContainer("my-container");
 
         try
         {
-            var response = await container.DeleteItemAsync<object>(id, new PartitionKey("partition-key"));
+            var response = await container.DeleteItemAsync<Customer>(id: id, partitionKey: PartitionKey.None);
             return new OkObjectResult(response.Resource);
         }
-        catch (CosmosException ex)
+        catch
         {
-            log.LogError("Error deleting item: {Error}", ex);
+            log.LogError("Error deleting item: {Error}");
             return new NotFoundResult();
         }
+//        return new OkResult();
     }
-}
+}   
 }
