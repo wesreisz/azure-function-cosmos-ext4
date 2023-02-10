@@ -6,7 +6,8 @@ about how to connect:
 https://devblogs.microsoft.com/cosmosdb/under-the-hood-of-the-new-azure-functions-extension-for-azure-cosmos-db/
 
 
-You can test is with: curl http://localhost:7071/api/HttpTrigger -d '{"name":"Justin Reisz"}'
+You can test is with: curl http://localhost:7071/api/PostCustomer -d '{"name":"Ben Reisz", "email":"Ben@wesleyreisz.com", "phone":"502-302-6000"}'
+
 
 
 ## Notes

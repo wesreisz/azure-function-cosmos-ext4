@@ -28,12 +28,12 @@ public static class DeleteCustomer
         ILogger log)
     {
         log.LogInformation("Delete function processed a request.");
-        Container container = cosmosClient.GetDatabase("my-database").GetContainer("my-container");
+        var container = cosmosClient.GetContainer("my-database","my-container");
 
         try
         {
-            var response = await container.DeleteItemAsync<Customer>(id: id, partitionKey: PartitionKey.None);
-            return new OkObjectResult(response.Resource);
+            var response = await container.DeleteItemStreamAsync(id: id, partitionKey: PartitionKey.None);
+            return new OkObjectResult(response);
         }
         catch
         {
@@ -44,3 +44,10 @@ public static class DeleteCustomer
     }
 }   
 }
+/* 
+// Suppose our container is partitioned by tenantId, and we want to delete all the data for a particular tenant Contoso
+ResponseMessage deleteResponse = await container.DeleteAllItemsByPartitionKeyStreamAsync(new PartitionKey("Contoso"));
+
+ if (deleteResponse.IsSuccessStatusCode) {
+    Console.WriteLine($"Delete all documents with partition key operation has successfully started");
+} */
