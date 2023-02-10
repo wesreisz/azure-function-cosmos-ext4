@@ -32,6 +32,8 @@ public static class DeleteCustomer
 
         try
         {
+            //There is a resource id (_rid) in Azure, this could be the id DeleteItemAsync wants   
+            //https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.cosmos.container.deleteitemasync?view=azure-dotnet
             var response = await container.DeleteItemStreamAsync(id: id, partitionKey: PartitionKey.None);
             return new OkObjectResult(response);
         }
