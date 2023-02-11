@@ -10,37 +10,47 @@ using Newtonsoft.Json;
 using CosmosDBSamplesV2;
 using System.Collections.Generic;
 
+//TODO: Information on how to talk to CosmosDB using Extensions 4.0
+//check this page: https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-input?tabs=in-process%2Cfunctionsv2&pivots=programming-language-csharp#http-trigger-get-multiple-docs-using-sqlquery-c
+
+//example call to list customers: curl http://localhost:7071/api/GetCustomer | jq
+//example call to get customer by id: curl http://localhost:7071/api/GetCustomer/9333a401-2881-4e94-84c5-962c319dcd8c | jq
 namespace com.wesleyreisz.example
 {
     public static class GetCustomer
     {
         [FunctionName("GetCustomer")]
          public static Task<string> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetCustomer/{id?}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "my-database",
                 containerName: "my-container",
                 Connection = "CosmosDbConnectionString",
                 SqlQuery = "SELECT * FROM c order by c._ts desc")]
                 IEnumerable<Customer> customers,
-            ILogger log)
+                String id,
+                ILogger log)
             {
             //TODO: Some queries to look into and think about. How would you adapt this method to take some of this
             //into consideration:
             // - how do you limit the results returned? How do you paginate? Look at OFFSET 1 LIMIT 1
             // - how do you query for a subset of data? look at using where c.CustomerName = 'Justin Reisz'
             // - what are the ramifications of using a * in the select statement?
-           
-
-            log.LogInformation("Triggering Get Customer");
-            foreach (Customer customer in customers)
-            {
-                if (customer.Id == null)
-                log.LogInformation($"Found Customer: {customer.CustomerName} {customer.Id})");
+            var findId = $"{id}";
+            if (findId != ""){
+                log.LogInformation("Triggering Get Customer By ID %s", findId);
+                foreach (Customer customer in customers){
+                    if (findId==customer.Id){
+                        log.LogInformation($"Found Customer: {customer.CustomerName} {customer.Id})");
+                        return Task.FromResult(JsonConvert.SerializeObject(customer));
+                    }
+                }
+                return Task.FromResult(JsonConvert.SerializeObject(new Customer()));
+            }   
+            else{
+                log.LogInformation("Triggering Get Customer");
+                return Task.FromResult(JsonConvert.SerializeObject(customers));
             }
-            //TODO: Information on how to talk to CosmosDB using Extensions 4.0
-            //check this page: https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-input?tabs=in-process%2Cfunctionsv2&pivots=programming-language-csharp#http-trigger-get-multiple-docs-using-sqlquery-c
-            return Task.FromResult(JsonConvert.SerializeObject(customers));
         }
     }
 }
