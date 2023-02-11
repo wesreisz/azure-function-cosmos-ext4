@@ -12,10 +12,10 @@ using CosmosDBSamplesV2;
 using System.Collections.Generic;
 using Microsoft.Azure.Cosmos;
 
+//NOTE: PartitionId is required, but if you don't create a partitian id you set it equal to the id.
 
 namespace com.wesleyreisz.example
 {
-    //8c058f7c-f94d-4ae0-8d86-78de0bd89662
 public static class DeleteCustomer
 {
     [FunctionName("DeleteCustomer")]
@@ -48,10 +48,3 @@ public static class DeleteCustomer
     }
 }   
 }
-/* 
-// Suppose our container is partitioned by tenantId, and we want to delete all the data for a particular tenant Contoso
-ResponseMessage deleteResponse = await container.DeleteAllItemsByPartitionKeyStreamAsync(new PartitionKey("Contoso"));
-
- if (deleteResponse.IsSuccessStatusCode) {
-    Console.WriteLine($"Delete all documents with partition key operation has successfully started");
-} */

@@ -28,6 +28,10 @@ namespace com.wesleyreisz.example
             //this reads the body and deserializes it to json
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
+
+            //you can also create using the CosmosDbClient (see delete) and do this
+            //var result = await container.CreateItemAsync<Customer>(test, new PartitionKey(test.Id));
+            //delete
             
             //this is a shortcut to creating an object. You should create an object
             //structure in the src folder and then use that in your logic. I did this
