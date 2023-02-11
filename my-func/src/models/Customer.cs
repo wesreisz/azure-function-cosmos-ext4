@@ -4,10 +4,6 @@ namespace CosmosDBSamplesV2
 {
     public class Customer
     {
-
-        [JsonProperty("partitionKey")]
-        public string partitionKey { get; set; }
-
         [JsonProperty("id")]
         public string Id { get; set; }
 
