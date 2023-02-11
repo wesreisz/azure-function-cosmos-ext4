@@ -6,6 +6,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
 using CosmosDBSamplesV2;
 using System.Collections.Generic;
@@ -29,19 +30,23 @@ public static class DeleteCustomer
     {
         log.LogInformation("Delete function processed a request.");
         var container = cosmosClient.GetContainer("my-database","my-container");
+        
 
         try
         {
-            //https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.cosmos.container.deleteitemasync?view=azure-dotnet
-            var response = await container.DeleteItemStreamAsync(id: id, partitionKey: PartitionKey.None);
-            return new OkObjectResult(response);
+            var findId = $"{id}";
+            Customer customer = new Customer(){Id=id};
+            //create
+            //var result = await container.CreateItemAsync<Customer>(test, new PartitionKey(test.Id));
+            //delete
+            var result = await container.DeleteItemAsync<Customer>(customer.Id, new PartitionKey(customer.Id));         
         }
-        catch
+        catch(Exception ex)
         {
-            log.LogError("Error deleting item: {Error}");
+            //log.LogError("Error deleting item: " + ex.Message);
             return new NotFoundResult();
         }
-//        return new OkResult();
+        return new OkResult();
     }
 }   
 }
