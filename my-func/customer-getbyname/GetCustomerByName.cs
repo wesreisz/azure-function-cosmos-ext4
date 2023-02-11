@@ -10,19 +10,21 @@ using Newtonsoft.Json;
 using CosmosDBSamplesV2;
 using System.Collections.Generic;
 
+//example call:  curl "http://localhost:7071/api/GetCustomerByName/Wesley%20Reisz" 
+
 namespace com.wesleyreisz.example
 {
     public static class GetCustomerName
     {
-        [FunctionName("GetCustomerName")]
-         public static IActionResult Run(
+        [FunctionName("GetCustomerByName")]
+         public static Task<string> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", 
-                Route = "GetCustomerName/{id}")] HttpRequest req,
+                Route = "GetCustomerByName/{name}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "my-database",
                 containerName: "my-container",
                 Connection = "CosmosDbConnectionString",
-                SqlQuery = "SELECT * FROM c WHERE c.id = {id}")]
+                SqlQuery = "SELECT * FROM c WHERE c.CustomerName = {name}")]
                 IEnumerable<Customer> customers,
             ILogger log)
             {
@@ -34,6 +36,6 @@ namespace com.wesleyreisz.example
                 
             }
 
-            return new OkResult();        }
+            return Task.FromResult(JsonConvert.SerializeObject(customers));       }
     }
 }
