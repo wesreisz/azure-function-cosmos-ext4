@@ -30,8 +30,6 @@ public static class DeleteCustomer
     {
         log.LogInformation("Delete function processed a request.");
         var container = cosmosClient.GetContainer("my-database","my-container");
-        
-
         try
         {
             var findId = $"{id}";

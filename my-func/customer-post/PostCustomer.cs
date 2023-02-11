@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using CosmosDBSamplesV2;
 
-//{"name":"Wesley Reisz", "email":"wes@wesleyreisz.com", "phone":"502-802-2361"}
+//Example Post: curl -X POST http://localhost:7071/api/PostCustomer -d "{'name':'Wesley Reisz', 'email':'wes@wesleyreisz.com', 'phone':'502-802-2361'}"
 namespace com.wesleyreisz.example
 {
     public static class PostCustomer
