@@ -40,58 +40,10 @@ public class UnitTest1
         var content = await response.Content.ReadAsStringAsync();
         var customers = JsonConvert.DeserializeObject<List<Customer>>(content);
         Assert.IsType<List<Customer>>(customers);
-    }
-
-    /*
-        {
-        // Set up the test server
-        var builder = new WebHostBuilder()
-            .ConfigureServices(services =>
-            {
-                // Add any necessary services to the service collection
-            })
-            .UseStartup<Startup>();
-        var server = new TestServer(builder);
-
-        // Set up the HTTP request
-        var client = server.CreateClient();
-        var request = new HttpRequestMessage(HttpMethod.Get, "/api/GetCustomer");
-
-        // Send the request and get the response
-        var response = await client.SendAsync(request);
-        var content = await response.Content();
-
-        // Verify the response
-        response.EnsureSuccessStatusCode();
-        Assert.IsType<OkObjectResult>(response.Content);
-    }
-
-
-          {
-            // Arrange
-            var httpClient = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:7071/api/GetCustomer");
-
-            // Act
-            var response = await httpClient.SendAsync(request);
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            Assert.IsType<OkObjectResult>(response.Content);
-        }
-*/
-
-    public HttpRequest HttpRequestSetup(Dictionary<String, StringValues> query, string body)
-    {
-        var reqMock = new Mock<HttpRequest>();
-
-        reqMock.Setup(req => req.Query).Returns(new QueryCollection(query));
-        var stream = new MemoryStream();
-        var writer = new StreamWriter(stream);
-        writer.Write(body);
-        writer.Flush();
-        stream.Position = 0;
-        reqMock.Setup(req => req.Body).Returns(stream);
-        return reqMock.Object;
+        foreach (var customer in customers){
+            if (customer.CustomerName.Contains("Wesley")) {
+                Assert.Equal("Wesley Reisz", customer.CustomerName);
+            }
+        } 
     }
 }
