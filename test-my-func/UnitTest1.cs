@@ -9,6 +9,11 @@ using Microsoft.Extensions.Logging;
 using com.wesleyreisz.example;
 using CosmosDBSamplesV2;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Collections;
+//using Microsoft.AspNetCore.TestHost;
+using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace test_my_func;
 
@@ -30,15 +35,46 @@ public class UnitTest1
         ILogger log = Mock.Of<ILogger>();
         IEnumerable<Customer> customers = Mock.Of<IEnumerable<Customer>>();
 
-   //     var result = await com.wesleyreisz.example.GetCustomer.Run(
-     //       req: HttpRequestSetup(query, body),
-       //     customers: customers,
-         //   id: "",
-           // log: log);
+        var result = com.wesleyreisz.example.GetCustomer.Run(
+            req: HttpRequestSetup(query, body),
+            customers: customers,
+            id: "",
+            log: log);
         Customer wes = customers.Last<Customer>();
         Assert.Equal("Wesley Reisz", wes.CustomerName);
         
     }
+
+    /*
+using Microsoft.AspNetCore.TestHost;
+
+[Fact]
+public async Task RequestGetTest()
+{
+   // Set up the test server
+   var builder = new WebHostBuilder()
+       .ConfigureServices(services =>
+       {
+           // Add any necessary services to the service collection
+       })
+       .UseStartup<Startup>();
+   var server = new TestServer(builder);
+
+   // Set up the HTTP request
+   var client = server.CreateClient();
+   var request = new HttpRequestMessage(HttpMethod.Get, "/api/GetCustomer");
+
+   // Send the request and get the response
+   var response = await client.SendAsync(request);
+   var content = await response.Content.ReadAsStringAsync();
+
+   // Verify the response
+   Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+   var customers = JsonConvert.DeserializeObject<IEnumerable<Customer>>(content);
+   Customer wes = customers.Last<Customer>();
+   Assert.Equal("Wesley Reisz", wes.CustomerName);
+}
+*/
 
     public HttpRequest HttpRequestSetup(Dictionary<String, StringValues> query, string body)
     {
