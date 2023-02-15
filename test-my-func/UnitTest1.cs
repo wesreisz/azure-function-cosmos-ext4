@@ -66,14 +66,25 @@ public async Task RequestGetTest()
 
    // Send the request and get the response
    var response = await client.SendAsync(request);
-   var content = await response.Content.ReadAsStringAsync();
+   var content = await response.Content();
 
    // Verify the response
-   Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-   var customers = JsonConvert.DeserializeObject<IEnumerable<Customer>>(content);
-   Customer wes = customers.Last<Customer>();
-   Assert.Equal("Wesley Reisz", wes.CustomerName);
+   response.EnsureSuccessStatusCode();
+   Assert.IsType<OkObjectResult>(response.Content);
 }
+
+          {
+            // Arrange
+            var httpClient = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:7071/api/GetCustomer");
+
+            // Act
+            var response = await httpClient.SendAsync(request);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.IsType<OkObjectResult>(response.Content);
+        }
 */
 
     public HttpRequest HttpRequestSetup(Dictionary<String, StringValues> query, string body)
