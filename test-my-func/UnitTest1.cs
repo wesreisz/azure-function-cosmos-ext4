@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using Xunit;
 using Microsoft.AspNetCore.Http;
 using Moq;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using com.wesleyreisz.example;
 using CosmosDBSamplesV2;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections;
-//using Microsoft.AspNetCore.TestHost;
+using Microsoft.AspNetCore.TestHost;
+//Need to use version six of testhost for dotnet 6
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.Net;
@@ -28,50 +28,42 @@ public class UnitTest1
     [Fact]
     public async Task RequestGetTest()
     {
-        var query = new Dictionary<String, StringValues>();
-        //query.TryAdd("name", "ushio");
-        var body = "";
+        // Arrange
+        var httpClient = new HttpClient();
+        var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:7071/api/GetCustomer");
 
-        ILogger log = Mock.Of<ILogger>();
-        IEnumerable<Customer> customers = Mock.Of<IEnumerable<Customer>>();
+        // Act
+        var response = await httpClient.SendAsync(request);
 
-        var result = com.wesleyreisz.example.GetCustomer.Run(
-            req: HttpRequestSetup(query, body),
-            customers: customers,
-            id: "",
-            log: log);
-        Customer wes = customers.Last<Customer>();
-        Assert.Equal("Wesley Reisz", wes.CustomerName);
-        
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.IsType<OkObjectResult>(response.Content);
     }
 
     /*
-using Microsoft.AspNetCore.TestHost;
+        {
+        // Set up the test server
+        var builder = new WebHostBuilder()
+            .ConfigureServices(services =>
+            {
+                // Add any necessary services to the service collection
+            })
+            .UseStartup<Startup>();
+        var server = new TestServer(builder);
 
-[Fact]
-public async Task RequestGetTest()
-{
-   // Set up the test server
-   var builder = new WebHostBuilder()
-       .ConfigureServices(services =>
-       {
-           // Add any necessary services to the service collection
-       })
-       .UseStartup<Startup>();
-   var server = new TestServer(builder);
+        // Set up the HTTP request
+        var client = server.CreateClient();
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/GetCustomer");
 
-   // Set up the HTTP request
-   var client = server.CreateClient();
-   var request = new HttpRequestMessage(HttpMethod.Get, "/api/GetCustomer");
+        // Send the request and get the response
+        var response = await client.SendAsync(request);
+        var content = await response.Content();
 
-   // Send the request and get the response
-   var response = await client.SendAsync(request);
-   var content = await response.Content();
+        // Verify the response
+        response.EnsureSuccessStatusCode();
+        Assert.IsType<OkObjectResult>(response.Content);
+    }
 
-   // Verify the response
-   response.EnsureSuccessStatusCode();
-   Assert.IsType<OkObjectResult>(response.Content);
-}
 
           {
             // Arrange
