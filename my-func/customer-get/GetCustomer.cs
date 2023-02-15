@@ -20,7 +20,7 @@ namespace com.wesleyreisz.example
     public static class GetCustomer
     {
         [FunctionName("GetCustomer")]
-         public static Task<string> Run(
+         public static IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetCustomer/{id?}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "my-database",
@@ -42,14 +42,14 @@ namespace com.wesleyreisz.example
                 foreach (Customer customer in customers){
                     if (findId==customer.Id){
                         log.LogInformation($"Found Customer: {customer.CustomerName} {customer.Id})");
-                        return Task.FromResult(JsonConvert.SerializeObject(customer));
+                        return new OkObjectResult(customer);
                     }
                 }
-                return Task.FromResult(JsonConvert.SerializeObject(new Customer()));
+                return new NotFoundResult();
             }   
             else{
                 log.LogInformation("Triggering Get Customer");
-                return Task.FromResult(JsonConvert.SerializeObject(customers));
+                return new OkObjectResult(customers);
             }
         }
     }

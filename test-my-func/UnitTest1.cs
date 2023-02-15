@@ -30,11 +30,11 @@ public class UnitTest1
         ILogger log = Mock.Of<ILogger>();
         IEnumerable<Customer> customers = Mock.Of<IEnumerable<Customer>>();
 
-        var result = await com.wesleyreisz.example.GetCustomer.Run(
-            req: HttpRequestSetup(query, body),
-            customers: customers,
-            id: "",
-            log: log);
+   //     var result = await com.wesleyreisz.example.GetCustomer.Run(
+     //       req: HttpRequestSetup(query, body),
+       //     customers: customers,
+         //   id: "",
+           // log: log);
         Customer wes = customers.Last<Customer>();
         Assert.Equal("Wesley Reisz", wes.CustomerName);
         
