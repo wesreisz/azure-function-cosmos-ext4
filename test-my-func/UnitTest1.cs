@@ -37,7 +37,9 @@ public class UnitTest1
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.IsType<OkObjectResult>(response.Content);
+        var content = await response.Content.ReadAsStringAsync();
+        var customers = JsonConvert.DeserializeObject<List<Customer>>(content);
+        Assert.IsType<List<Customer>>(customers);
     }
 
     /*
