@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using CosmosDBSamplesV2;
 
 //Example Post: curl -X POST http://localhost:7071/api/PostCustomer -d "{'name':'Wesley Reisz', 'email':'wes@wesleyreisz.com', 'phone':'502-802-2361'}"
+// TODO: Post needs to check to see if there is already a Customer matching the description before posting a new one
 namespace com.wesleyreisz.example
 {
     public static class PostCustomer
