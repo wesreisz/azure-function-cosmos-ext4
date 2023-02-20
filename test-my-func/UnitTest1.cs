@@ -39,24 +39,37 @@ public class UnitTest1
 
         //Get customers
         var getCustomersResponse = await client.GetAsync($"{FunctionBaseUrl}/GetCustomer");
-        getCustomersResponse.EnsureSuccessStatusCode();
-        var customers = JsonConvert.DeserializeObject<List<Customer>>(await getCustomersResponse.Content.ReadAsStringAsync());
+        var message = getCustomersResponse.EnsureSuccessStatusCode();
+        Assert.True(message.StatusCode == System.Net.HttpStatusCode.OK, "Got an invalid response code calling '/GetCustomer'");
+
+        var initialCustomerList = JsonConvert.DeserializeObject<List<Customer>>(await getCustomersResponse.Content.ReadAsStringAsync());
 
         //post customer
-        var postResponse = await client.PostAsync($"{FunctionBaseUrl}/PostCustomer", content);
-        postResponse.EnsureSuccessStatusCode();
+        await client.PostAsync($"{FunctionBaseUrl}/PostCustomer", content);
+        var getPostResponse = await client.GetAsync($"{FunctionBaseUrl}/GetCustomer");
+        var newCustomerList = JsonConvert.DeserializeObject<List<Customer>>(await getPostResponse.Content.ReadAsStringAsync());
+        Assert.True(
+            initialCustomerList.ToArray<Customer>().Length + 1 == newCustomerList.ToArray<Customer>().Length,
+            "New Customer List does not container new customer record");
 
-        //customer by name
+
+        //customer by name/delete customer
         var getResponse = await client.GetAsync($"{FunctionBaseUrl}/GetCustomerByName/Wesley%20Reisz");
-        getResponse.EnsureSuccessStatusCode();
+        Assert.True(message.StatusCode == System.Net.HttpStatusCode.OK, "Couldn't find Customer by Name");
         var customer = JsonConvert.DeserializeObject<List<Customer>>(await getResponse.Content.ReadAsStringAsync()).FirstOrDefault();
-        Assert.IsType<List<Customer>>(customers);
+        Assert.IsType<List<Customer>>(newCustomerList);
         Assert.NotNull(customer);
         Assert.Equal("Wesley Reisz", customer.CustomerName);
         Assert.NotNull(customer.Id);
         var deleteResponse = await client.DeleteAsync($"{FunctionBaseUrl}/DeleteCustomer/{customer.Id}");
         deleteResponse.EnsureSuccessStatusCode();
 
+        var getDeleteResponse = await client.GetAsync($"{FunctionBaseUrl}/GetCustomer");
+        var lastCustomerList = JsonConvert.DeserializeObject<List<Customer>>(await getDeleteResponse.Content.ReadAsStringAsync());
+
+        Assert.True(
+            initialCustomerList.ToArray<Customer>().Length == lastCustomerList.ToArray<Customer>().Length,
+            "Delete Customer did not execute correctly.");
     }
 
 
