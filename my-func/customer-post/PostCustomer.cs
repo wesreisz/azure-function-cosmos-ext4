@@ -19,8 +19,8 @@ namespace com.wesleyreisz.example
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             [CosmosDB(
-                 databaseName: "my-database",
-                 containerName: "my-container",
+                 databaseName: "%CosmosDbConfig:DatabaseName%",
+                 containerName: "%CosmosDbConfig:ContainerName%",
                  Connection = "CosmosDbConnectionString")]IAsyncCollector<dynamic> documentsOut,
             ILogger log)
         {

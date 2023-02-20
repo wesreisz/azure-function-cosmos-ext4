@@ -23,8 +23,8 @@ public static class DeleteCustomer
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteCustomer/{id}")] HttpRequest req,
         string id,
         [CosmosDB(
-            databaseName: "my-database",
-            containerName: "my-container",
+            databaseName: "%CosmosDbConfig:DatabaseName%",
+            containerName: "%CosmosDbConfig:ContainerName%",
             Connection = "CosmosDbConnectionString")] CosmosClient cosmosClient,
         ILogger log)
     {

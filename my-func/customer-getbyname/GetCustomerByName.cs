@@ -21,8 +21,8 @@ namespace com.wesleyreisz.example
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", 
                 Route = "GetCustomerByName/{name}")] HttpRequest req,
             [CosmosDB(
-                databaseName: "my-database",
-                containerName: "my-container",
+                databaseName: "%CosmosDbConfig:DatabaseName%",
+                containerName: "%CosmosDbConfig:ContainerName%",
                 Connection = "CosmosDbConnectionString",
                 SqlQuery = "SELECT * FROM c WHERE c.CustomerName = {name}")]
                 IEnumerable<Customer> customers,

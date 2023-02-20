@@ -23,8 +23,8 @@ namespace com.wesleyreisz.example
          public static IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetCustomer/{id?}")] HttpRequest req,
             [CosmosDB(
-                databaseName: "my-database",
-                containerName: "my-container",
+                databaseName: "%CosmosDbConfig:DatabaseName%",
+                containerName: "%CosmosDbConfig:ContainerName%",
                 Connection = "CosmosDbConnectionString",
                 SqlQuery = "SELECT * FROM c order by c._ts desc")]
                 IEnumerable<Customer> customers,

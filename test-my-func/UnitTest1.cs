@@ -21,7 +21,6 @@ namespace test_my_func;
 public class UnitTest1
 {
     private const string FunctionBaseUrl = "http://localhost:7071/api";
-    private string newCustomerID;
 
     [Fact]
     public void TestBasicFunction()
@@ -34,7 +33,7 @@ public class UnitTest1
     {
         // Arrange
         var client = new HttpClient();
-        //postcustomer info
+        //postcustomer info 
         var newCustomer = new { name = "Wesley Reisz", email = "wes@wesleyreisz.com", phone = "502-802-2361" };
         var content = new StringContent(JsonConvert.SerializeObject(newCustomer));
 
