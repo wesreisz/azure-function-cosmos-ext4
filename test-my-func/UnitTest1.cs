@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http;
+
 namespace test_my_func;
 
 public class UnitTest1
@@ -28,80 +30,35 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task GetAllCustomers()
+    public async Task IntTest()
     {
         // Arrange
-        var httpClient = new HttpClient();
-        var request = new HttpRequestMessage(HttpMethod.Get, $"{FunctionBaseUrl}/GetCustomer");
-
-        // Act
-        var response = await httpClient.SendAsync(request);
-
-        // Assert
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        var customers = JsonConvert.DeserializeObject<List<Customer>>(content);
-        Assert.IsType<List<Customer>>(customers);
-        foreach (var customer in customers) {
-            if (customer.CustomerName.Contains("Wesley")) {
-                Assert.Equal("Wesley Reisz", customer.CustomerName);
-            }
-        }
-    }
-
-
-    [Fact]
-    public async Task PostCustomer()
-    {
-        //Arrange
-        var httpClient = new HttpClient();
-
-        // Create a customer/Arrange
+        var client = new HttpClient();
+        //postcustomer info
         var newCustomer = new { name = "Wesley Reisz", email = "wes@wesleyreisz.com", phone = "502-802-2361" };
         var content = new StringContent(JsonConvert.SerializeObject(newCustomer));
 
-        // Act
-        var postResponse = await httpClient.PostAsync($"{FunctionBaseUrl}/PostCustomer", content);
+        //Get customers
+        var getCustomersResponse = await client.GetAsync($"{FunctionBaseUrl}/GetCustomer");
+        getCustomersResponse.EnsureSuccessStatusCode();
+        var customers = JsonConvert.DeserializeObject<List<Customer>>(await getCustomersResponse.Content.ReadAsStringAsync());
+
+        //post customer
+        var postResponse = await client.PostAsync($"{FunctionBaseUrl}/PostCustomer", content);
         postResponse.EnsureSuccessStatusCode();
 
-        // Assert?
-    }
-
-    [Fact]
-    public async Task GetCustomerByName()
-        //And Delete, it didn't like me adding delete to the name
-    {
-        //Arrange
-        var httpClient = new HttpClient();
-
-        //Act
-        var getResponse = await httpClient.GetAsync($"{FunctionBaseUrl}/GetCustomerByName/Wesley%20Reisz");
+        //customer by name
+        var getResponse = await client.GetAsync($"{FunctionBaseUrl}/GetCustomerByName/Wesley%20Reisz");
         getResponse.EnsureSuccessStatusCode();
-
-        //Assert
-        var responseContent = await getResponse.Content.ReadAsStringAsync();
-        var customers = JsonConvert.DeserializeObject<List<Customer>>(responseContent);
-        Assert.Single(customers);
-        var newCustomerID = customers[0].Id;
-        Assert.Equal("Wesley Reisz", customers[0].CustomerName);
-
-        //Act
-        var deleteResponse = await httpClient.DeleteAsync($"{FunctionBaseUrl}/DeleteCustomer/{newCustomerID}");
-        //Assert?
+        var customer = JsonConvert.DeserializeObject<List<Customer>>(await getResponse.Content.ReadAsStringAsync()).FirstOrDefault();
+        Assert.IsType<List<Customer>>(customers);
+        Assert.NotNull(customer);
+        Assert.Equal("Wesley Reisz", customer.CustomerName);
+        Assert.NotNull(customer.Id);
+        var deleteResponse = await client.DeleteAsync($"{FunctionBaseUrl}/DeleteCustomer/{customer.Id}");
         deleteResponse.EnsureSuccessStatusCode();
 
     }
 
-    //[Fact]
-    //public async Task DeleteCustomer()
-    //{
-    //    //Arrange
-    //    var httpClient = new HttpClient();
-       
-    //    //Act
-    //    var deleteResponse = await httpClient.DeleteAsync($"{FunctionBaseUrl}/DeleteCustomer/{newCustomerID}");
 
-    //    //Assert?
-    //    deleteResponse.EnsureSuccessStatusCode();
-    //}
 }
