@@ -20,7 +20,7 @@ namespace com.wesleyreisz.example
     public static class GetCustomer
     {
         [FunctionName("GetCustomer")]
-         public static IActionResult Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetCustomer/{id?}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "%CosmosDbConfig:DatabaseName%",
