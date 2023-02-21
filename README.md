@@ -8,6 +8,8 @@ https://devblogs.microsoft.com/cosmosdb/under-the-hood-of-the-new-azure-function
 
 You can test is with: curl http://localhost:7071/api/PostCustomer -d '{"name":"Ben Reisz", "email":"Ben@wesleyreisz.com", "phone":"502-302-6000"}'
 
+This is a sample commit. For a PR sample
+
 
 
 ## Notes
