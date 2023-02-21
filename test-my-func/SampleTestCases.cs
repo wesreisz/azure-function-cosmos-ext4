@@ -34,10 +34,10 @@ namespace test_my_func
             Assert.True(response.GetType() == expectedResult);
         }
 
-        [Theory]
+        [Theory(DisplayName = "Test return object types when getting by id or askign for a list")]
         [InlineData("", typeof(OkObjectResult))]
-        //[InlineData("123", typeof(OkObjectResult))]
-        //[InlineData("9999", typeof(NotFoundResult))]
+        [InlineData("123", typeof(OkObjectResult))]
+        [InlineData("9999", typeof(NotFoundResult))]
         public async Task Function_Returns_Customer(string queryParam, Type expectedResult)
         {
             //Arrange
@@ -54,7 +54,6 @@ namespace test_my_func
             var logger = Mock.Of<ILogger>();
             //Act
             var response = await GetCustomer.Run(request.Object, customers, queryParam, logger);
-            //var result = response.Value;
             //Assert
             Assert.True(response.GetType() == expectedResult);
         }
