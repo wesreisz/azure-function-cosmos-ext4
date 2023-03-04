@@ -20,11 +20,11 @@ public static class DeleteCustomer
 {
     [FunctionName("DeleteCustomer")]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteCustomer/{id}")] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "DeleteCustomer/{id}")] HttpRequest req,
         string id,
         [CosmosDB(
-            databaseName: "%CosmosDbConfig:DatabaseName%",
-            containerName: "%CosmosDbConfig:ContainerName%",
+            databaseName: "%CosmosDbConfigDatabaseName%",
+            containerName: "%CosmosDbConfigContainerName%",
             Connection = "CosmosDbConnectionString")] CosmosClient cosmosClient,
         ILogger log)
     {
