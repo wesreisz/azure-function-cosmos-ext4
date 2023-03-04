@@ -21,10 +21,10 @@ namespace com.wesleyreisz.example
     {
         [FunctionName("GetCustomer")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetCustomer/{id?}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetCustomer/{id?}")] HttpRequest req,
             [CosmosDB(
-                databaseName: "%CosmosDbConfig:DatabaseName%",
-                containerName: "%CosmosDbConfig:ContainerName%",
+                databaseName: "%CosmosDbConfigDatabaseName%",
+                containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString",
                 SqlQuery = "SELECT * FROM c order by c._ts desc")]
                 IEnumerable<Customer> customers,

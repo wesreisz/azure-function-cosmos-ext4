@@ -17,10 +17,10 @@ namespace com.wesleyreisz.example
     {
         [FunctionName("PostCustomer")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             [CosmosDB(
-                 databaseName: "%CosmosDbConfig:DatabaseName%",
-                 containerName: "%CosmosDbConfig:ContainerName%",
+                 databaseName: "%CosmosDbConfigDatabaseName%",
+                 containerName: "%CosmosDbConfigContainerName%",
                  Connection = "CosmosDbConnectionString")]IAsyncCollector<dynamic> documentsOut,
             ILogger log)
         {

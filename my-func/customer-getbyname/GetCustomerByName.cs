@@ -18,11 +18,11 @@ namespace com.wesleyreisz.example
     {
         [FunctionName("GetCustomerByName")]
          public static Task<string> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", 
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", 
                 Route = "GetCustomerByName/{name}")] HttpRequest req,
             [CosmosDB(
-                databaseName: "%CosmosDbConfig:DatabaseName%",
-                containerName: "%CosmosDbConfig:ContainerName%",
+                databaseName: "%CosmosDbConfigDatabaseName%",
+                containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString",
                 SqlQuery = "SELECT * FROM c WHERE c.CustomerName = {name}")]
                 IEnumerable<Customer> customers,
