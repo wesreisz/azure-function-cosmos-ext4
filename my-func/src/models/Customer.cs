@@ -16,6 +16,8 @@ namespace CosmosDBSamplesV2
         [JsonProperty("customerPhone")]
         public string CustomerPhone { get; set; }
 
+        [JsonProperty("customerPunches")]
+        public string customerPunches { get; set; }
 
         [JsonProperty("_rid")]
         public string _rid { get; set; }
