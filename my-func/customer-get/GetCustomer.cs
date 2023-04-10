@@ -10,9 +10,6 @@ using Newtonsoft.Json;
 using CosmosDBSamplesV2;
 using System.Collections.Generic;
 
-//TODO: Information on how to talk to CosmosDB using Extensions 4.0
-//check this page: https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-input?tabs=in-process%2Cfunctionsv2&pivots=programming-language-csharp#http-trigger-get-multiple-docs-using-sqlquery-c
-
 //example call to list customers: curl http://localhost:7071/api/GetCustomer | jq
 //example call to get customer by id: curl http://localhost:7071/api/GetCustomer/9333a401-2881-4e94-84c5-962c319dcd8c | jq
 namespace com.wesleyreisz.example
