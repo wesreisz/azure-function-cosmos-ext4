@@ -10,6 +10,11 @@
     <PackageReference Include="JWT" Version="10.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="customer-update\" />
+    <None Remove="customer-punch\" />
+    <None Remove="customer-reward\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -17,5 +22,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="customer-update\" />
+    <Folder Include="customer-punch\" />
+    <Folder Include="customer-reward\" />
   </ItemGroup>
 </Project>

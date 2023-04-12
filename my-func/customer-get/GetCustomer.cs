@@ -28,11 +28,6 @@ namespace com.wesleyreisz.example
                 String id,
                 ILogger log)
             {
-            //TODO: Some queries to look into and think about. How would you adapt this method to take some of this
-            //into consideration:
-            // - how do you limit the results returned? How do you paginate? Look at OFFSET 1 LIMIT 1
-            // - how do you query for a subset of data? look at using where c.CustomerName = 'Justin Reisz'
-            // - what are the ramifications of using a * in the select statement?
             var findId = $"{id}";
             if (findId != ""){
                 log.LogInformation("Triggering Get Customer By ID %s", findId);

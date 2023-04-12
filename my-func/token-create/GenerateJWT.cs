@@ -24,7 +24,7 @@ using System.Collections.Generic;
             {
         var unixExp = new DateTimeOffset(DateTime.UtcNow.AddDays(1)).ToUnixTimeSeconds();
         Dictionary<string, object> claims = new Dictionary<string, object> {
-                // JSON representation of the user Reference with ID and display name
+                // JSON representation of the user with ID and display name
                 {
                     "name",
                     email

@@ -34,9 +34,6 @@ public static class DeleteCustomer
         {
             var findId = $"{id}";
             Customer customer = new Customer(){Id=id};
-            //create
-            //var result = await container.CreateItemAsync<Customer>(test, new PartitionKey(test.Id));
-            //delete
             var result = await container.DeleteItemAsync<Customer>(customer.Id, new PartitionKey(customer.Id));         
         }
         catch(Exception ex)

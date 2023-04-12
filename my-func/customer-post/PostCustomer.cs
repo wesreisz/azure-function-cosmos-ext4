@@ -32,11 +32,7 @@ namespace com.wesleyreisz.example
 
             //you can also create using the CosmosDbClient (see delete) and do this
             //var result = await container.CreateItemAsync<Customer>(test, new PartitionKey(test.Id));
-            //delete
-            
-            //this is a shortcut to creating an object. You should create an object
-            //structure in the src folder and then use that in your logic. I did this
-            //for validation purposes.
+
             if (requestBody.Contains("name") && 
                 requestBody.Contains("email") &&
                 requestBody.Contains("phone"))
