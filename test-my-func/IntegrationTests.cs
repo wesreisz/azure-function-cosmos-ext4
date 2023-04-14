@@ -5,7 +5,7 @@ using Xunit;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Microsoft.Extensions.Logging;
-using com.wesleyreisz.example;
+using loyaltyFunctions;
 using CosmosDBSamplesV2;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections;

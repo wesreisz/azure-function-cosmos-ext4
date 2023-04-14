@@ -14,7 +14,7 @@ using Microsoft.Azure.Cosmos;
 
 //NOTE: PartitionId is required, but if you don't create a partitian id you set it equal to the id.
 
-namespace com.wesleyreisz.example
+namespace loyaltyFunctions
 {
 public static class DeleteCustomer
 {

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 //example call:  curl "http://localhost:7071/api/GetCustomerByName/Wesley%20Reisz" 
 
-namespace com.wesleyreisz.example
+namespace loyaltyFunctions
 {
     public static class GetCustomerName
     {

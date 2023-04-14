@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 //example call to list customers: curl http://localhost:7071/api/GetCustomer | jq
 //example call to get customer by id: curl http://localhost:7071/api/GetCustomer/9333a401-2881-4e94-84c5-962c319dcd8c | jq
-namespace com.wesleyreisz.example
+namespace loyaltyFunctions
 {
     public static class GetCustomer
     {

@@ -8,53 +8,61 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using CosmosDBSamplesV2;
+using Microsoft.Azure.Cosmos;
+using System.Collections.Generic;
 
 // Example Post: curl -X POST http://localhost:7071/api/RewardCustomer/5599bb98-f8ae-4781-9e80-b27325d07bb6
-namespace com.wesleyreisz.example
+namespace loyaltyFunctions
 {
     public static class RewardCustomer
     {
         [FunctionName("RewardCustomer")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "RewardCustomer/{id}")] HttpRequest req,
+            [CosmosDB(
+                databaseName: "%CosmosDbConfigDatabaseName%",
+                containerName: "%CosmosDbConfigContainerName%",
+                Connection = "CosmosDbConnectionString",
+                SqlQuery = "SELECT * FROM c WHERE c.id = {id}")] IEnumerable<Customer> customers,
+            String id,
             [CosmosDB(
                 databaseName: "%CosmosDbConfigDatabaseName%",
                 containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString")] IAsyncCollector<dynamic> documentsOut,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP trigger function RewardCustomer processed a request.");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-
-            string id = data.id;
-
-            try
+            var findId = $"{id}";
+            foreach (Customer customer in customers)
             {
-                dynamic customerDocument = await documentsOut.ReadDocumentAsync(id);
-                int customerPunches = customerDocument.customerPunches;
-
-                if (customerPunches >= 10)
+                if (findId == customer.Id)
                 {
-                    customerDocument.customerPunches -= 10;
+                    log.LogInformation($"Found Customer: {customer.CustomerName} {customer.Id})");
 
-                    await documentsOut.ReplaceDocumentAsync(customerDocument.id, customerDocument);
+                    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                    dynamic data = JsonConvert.DeserializeObject(requestBody);
 
-                    string responseMessage = $"Reward claimed successfully for customer with ID: {id}. Remaining punches: {customerDocument.customerPunches}";
-                    return new OkObjectResult(responseMessage);
-                }
-                else
-                {
-                    string responseMessage = $"Not enough punches for a reward for customer with ID: {id}. Punches required: 10, Remaining punches: {customerPunches}";
-                    return new OkObjectResult(responseMessage);
+                    log.LogInformation(customer.CustomerName);
+
+                    customer.customerPunches = data.customerPunches;
+                    customer.CustomerEmail = data.customerEmail;
+                    customer.CustomerName = data.customerName;
+                    customer.CustomerPhone = data.customerPhone;
+
+                    await documentsOut.AddAsync(new
+                    {
+                        customer.Id,
+                        customer.customerPunches,
+                        customer.CustomerEmail,
+                        customer.CustomerName,
+                        customer.CustomerPhone
+                    });
+                    return new OkObjectResult("Successfully updated Customer");
                 }
             }
-            catch (Exception ex)
-            {
-                log.LogError($"Failed to reward customer: {ex.Message}");
-                return new BadRequestObjectResult("Failed to reward customer");
-            }
+
+            return new NotFoundResult();
         }
     }
 }

@@ -11,7 +11,7 @@ using CosmosDBSamplesV2;
 
 //Example Post: curl -X POST http://localhost:7071/api/PostCustomer -d "{'name':'Wesley Reisz', 'email':'wes@wesleyreisz.com', 'phone':'502-802-2361'}"
 // TODO: Post needs to check to see if there is already a Customer matching the description before posting a new one
-namespace com.wesleyreisz.example
+namespace loyaltyFunctions
 {
     public static class PostCustomer
     {
@@ -24,7 +24,7 @@ namespace com.wesleyreisz.example
                  Connection = "CosmosDbConnectionString")]IAsyncCollector<dynamic> documentsOut,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP trigger function PostCustomer processed a request.");
 
             //this reads the body and deserializes it to json
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();

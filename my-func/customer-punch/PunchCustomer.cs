@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using CosmosDBSamplesV2;
 
 //Example Post: curl -X POST http://localhost:7071/api/PunchCustomer/5599bb98-f8ae-4781-9e80-b27325d07bb6
-namespace com.wesleyreisz.example
+namespace loyaltyFunctions
 {
     public static class PunchCustomer
     {
@@ -23,7 +23,7 @@ namespace com.wesleyreisz.example
                 Connection = "CosmosDbConnectionString")] IAsyncCollector<dynamic> documentsOut,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP trigger function PunchCustomer processed a request.");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);

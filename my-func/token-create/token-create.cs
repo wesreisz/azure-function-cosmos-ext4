@@ -17,10 +17,6 @@ namespace my_func
     public class TokenCreate
     {
         private const String DEFAULT_ROLE = "undefined";
-        private readonly IJwtAlgorithm _algorithm;
-        private readonly IJsonSerializer _serializer;
-        private readonly IBase64UrlEncoder _base64Encoder;
-        private readonly IJwtEncoder _jwtEncoder;
 
         [FunctionName("TokenCreate")]
         public static async Task<IActionResult> Run(
