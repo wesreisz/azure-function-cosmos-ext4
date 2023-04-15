@@ -45,15 +45,13 @@ namespace loyaltyFunctions
 
                     log.LogInformation(customer.CustomerName);
 
-                    customer.customerPunches = data.customerPunches;
                     customer.CustomerEmail = data.customerEmail;
                     customer.CustomerName = data.customerName;
                     customer.CustomerPhone = data.customerPhone;
-
+                        
                     await documentsOut.AddAsync(new
                     {
                         customer.Id,
-                        customer.customerPunches,
                         customer.CustomerEmail,
                         customer.CustomerName,
                         customer.CustomerPhone

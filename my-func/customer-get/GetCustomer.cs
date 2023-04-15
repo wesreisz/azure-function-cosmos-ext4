@@ -23,7 +23,7 @@ namespace loyaltyFunctions
                 databaseName: "%CosmosDbConfigDatabaseName%",
                 containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString",
-                SqlQuery = "SELECT * FROM c order by c._ts desc")]
+                SqlQuery = "SELECT * FROM c where c.Type='CUSTOMER' order by c._ts desc")]
                 IEnumerable<Customer> customers,
                 String id,
                 ILogger log)

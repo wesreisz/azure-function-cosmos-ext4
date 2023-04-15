@@ -8,47 +8,47 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using CosmosDBSamplesV2;
+using Microsoft.Azure.Cosmos;
 
-//Example Post: curl -X POST http://localhost:7071/api/PunchCustomer/5599bb98-f8ae-4781-9e80-b27325d07bb6
+//Example Post: curl http://localhost:7071/api/PunchCustomer/wes%40wesleyreisz.com
 namespace loyaltyFunctions
 {
     public static class PunchCustomer
     {
         [FunctionName("PunchCustomer")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get",  Route = "PunchCustomer/{email}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "%CosmosDbConfigDatabaseName%",
                 containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString")] IAsyncCollector<dynamic> documentsOut,
-            ILogger log)
+            ILogger log,
+            String email)
         {
             log.LogInformation("C# HTTP trigger function PunchCustomer processed a request.");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-
-            string id = data.id;
+            string punchEmail = $"{email}";
 
             try
             {
                 // Add a JSON document to the output container
                 await documentsOut.AddAsync(new
                 {
-                    id,
-                    customerPunches = 1 // Increase customerPunches by one?
+                    // create a random ID
+                    id = System.Guid.NewGuid().ToString(),
+                    Type = "PUNCH",
+                    CustomerEmail = punchEmail
                 });
 
-                string responseMessage = $"Punch added successfully to customer with ID: {id}";
+                string responseMessage = $"Punch added successfully to customer with {email}";
                 return new OkObjectResult(responseMessage);
             }
-
-
             catch (Exception ex)
             {
                 log.LogError($"Failed to update customer: {ex.Message}");
-                return new BadRequestObjectResult("Failed to update customer");
+                return new BadRequestObjectResult($"Failed to insert punch for customer with {email}");
             }
+
         }
     }
 }

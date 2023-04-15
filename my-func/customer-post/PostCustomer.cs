@@ -42,8 +42,9 @@ namespace loyaltyFunctions
                 {
                     // create a random ID
                     id = System.Guid.NewGuid().ToString(),
-                    
-                    CustomerEmail=data.email,
+
+                    Type = "CUSTOMER",
+                    CustomerEmail =data.email,
                     CustomerName=data.name,
                     CustomerPhone=data.phone
                 });
