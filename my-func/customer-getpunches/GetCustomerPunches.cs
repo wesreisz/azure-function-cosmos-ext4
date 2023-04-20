@@ -37,8 +37,8 @@ namespace my_func.customergetpunches
             var punchTotal = 10;//replace with a config value from cosmos
             var result = new{
                 punchNumber = totalPunches%punchTotal,
-                punchTotal = punchTotal,
-                punches
+                rewardTotal= totalPunches/punchTotal,
+                punchTotal = punchTotal
             };
 
             return Task.FromResult(JsonConvert.SerializeObject(result));
