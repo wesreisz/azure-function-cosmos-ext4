@@ -15,7 +15,6 @@
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="customer-update\" />
     <None Remove="customer-punch\" />
     <None Remove="customer-reward\" />
     <None Remove="customer-getbyemail\" />
@@ -31,7 +30,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="customer-update\" />
     <Folder Include="customer-punch\" />
     <Folder Include="customer-reward\" />
     <Folder Include="customer-getbyemail\" />
