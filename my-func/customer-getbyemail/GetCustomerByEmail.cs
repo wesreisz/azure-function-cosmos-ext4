@@ -18,7 +18,7 @@ namespace loyaltyFunctions
     {
         [FunctionName("GetCustomerByEmail")]
         public static Task<string> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post",
+            [HttpTrigger(AuthorizationLevel.Function, "get",
                 Route = "GetCustomerByEmail/{email}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "%CosmosDbConfigDatabaseName%",

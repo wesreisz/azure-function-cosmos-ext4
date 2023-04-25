@@ -29,7 +29,7 @@ public static class DeleteCustomer
         ILogger log)
     {
         log.LogInformation("Delete function processed a request.");
-        var container = cosmosClient.GetContainer("my-database","my-container");
+        var container = cosmosClient.GetContainer("LoyaltyDatabase", "Customers");
         try
         {
             var findId = $"{id}";
