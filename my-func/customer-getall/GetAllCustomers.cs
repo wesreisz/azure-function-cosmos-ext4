@@ -11,38 +11,25 @@ using CosmosDBSamplesV2;
 using System.Collections.Generic;
 
 //example call to list customers: curl http://localhost:7071/api/GetCustomer | jq
-//example call to get customer by id: curl http://localhost:7071/api/GetCustomer/9333a401-2881-4e94-84c5-962c319dcd8c | jq
 namespace loyaltyFunctions
 {
-    public static class GetCustomer
+    public static class GetAllCustomers
     {
-        [FunctionName("GetCustomer")]
+        [FunctionName("GetAllCustomers")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetCustomer/{id?}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetAllCustomers/")] HttpRequest req,
             [CosmosDB(
                 databaseName: "%CosmosDbConfigDatabaseName%",
                 containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString",
                 SqlQuery = "SELECT * FROM c where c.Type='CUSTOMER' order by c._ts desc")]
                 IEnumerable<Customer> customers,
-                String id,
                 ILogger log)
             {
-            var findId = $"{id}";
-            if (findId != ""){
-                log.LogInformation("Triggering Get Customer By ID %s", findId);
-                foreach (Customer customer in customers){
-                    if (findId==customer.Id){
-                        log.LogInformation($"Found Customer: {customer.CustomerName} {customer.Id})");
-                        return new OkObjectResult(customer);
-                    }
-                }
-                return new NotFoundResult();
-            }   
-            else{
+
+                
                 log.LogInformation("Triggering Get Customer");
                 return new OkObjectResult(customers);
             }
         }
-    }
 }
