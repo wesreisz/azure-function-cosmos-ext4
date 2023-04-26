@@ -1,16 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using CosmosDBSamplesV2;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using CosmosDBSamplesV2;
-using System.Collections.Generic;
 
-//example call to list customers: curl http://localhost:7071/api/GetCustomer | jq
 namespace loyaltyFunctions
 {
     public static class GetAllCustomers
@@ -22,14 +23,32 @@ namespace loyaltyFunctions
                 databaseName: "%CosmosDbConfigDatabaseName%",
                 containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString",
-                SqlQuery = "SELECT * FROM c where c.Type='CUSTOMER' order by c._ts desc")]
-                IEnumerable<Customer> customers,
-                ILogger log)
-            {
+                SqlQuery = "SELECT * FROM c where c.Type='CUSTOMER'")]
+        IEnumerable<Customer> customers,
+            ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
 
-                
-                log.LogInformation("Triggering Get Customer");
-                return new OkObjectResult(customers);
+            // Create a dictionary to hold the most recent customer data for each unique email
+            Dictionary<string, Customer> uniqueCustomers = new Dictionary<string, Customer>();
+
+            // Loop through each customer in the list and check if it is the most recent one for that email
+            foreach (Customer customer in customers)
+            {
+                if (uniqueCustomers.TryGetValue(customer.CustomerEmail, out Customer existingCustomer))
+                {
+                    if (long.Parse(customer._ts) > long.Parse(existingCustomer._ts))
+                    {
+                        uniqueCustomers[customer.CustomerEmail] = customer;
+                    }
+                }
+                else
+                {
+                    uniqueCustomers.Add(customer.CustomerEmail, customer);
+                }
             }
+
+            return new OkObjectResult(uniqueCustomers.Values.ToList());
         }
+    }
 }
