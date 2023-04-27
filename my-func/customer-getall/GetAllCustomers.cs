@@ -27,7 +27,7 @@ namespace loyaltyFunctions
         IEnumerable<Customer> customers,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("GetAllCustomers processed a request.");
 
             // Create a dictionary to hold the most recent customer data for each unique email
             Dictionary<string, Customer> uniqueCustomers = new Dictionary<string, Customer>();

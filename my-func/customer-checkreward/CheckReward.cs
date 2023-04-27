@@ -12,14 +12,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+//example call:  curl "http://localhost:7071/api/CheckReward/Wes@wesleyreisz.com" 
+
 namespace loyaltyFunctions
 {
     public static class CheckReward
     {
         [FunctionName("CheckReward")]
-        static Task<IActionResult> Run(
+        public static Task<IActionResult> Run(
     //This is the query that returns stuff
-    [HttpTrigger(AuthorizationLevel.Function, "get", Route = "ClaimReward/{email}")] HttpRequest req,
+    [HttpTrigger(AuthorizationLevel.Function, "get", Route = "CheckReward/{email}")] HttpRequest req,
     [CosmosDB(
         databaseName: "%CosmosDbConfigDatabaseName%",
         containerName: "%CosmosDbConfigContainerName%",
@@ -39,7 +41,9 @@ namespace loyaltyFunctions
     ILogger log,
     string email)
         {
+            log.LogInformation("CheckReward processed a request.");
             int punchesClaimed = punches.ToList().Count;
+            //Might need to change this later- just counts punches/10- doesn't account for claimed rewards
             int rewardsClaimed = punchesClaimed / 10;
 
             rewardDocument = new
@@ -47,6 +51,7 @@ namespace loyaltyFunctions
                 id = Guid.NewGuid().ToString(),
                 Type = "REWARD",
                 CustomerEmail = email,
+                //Might need to change this later- just counts punches/10
                 RewardTotal = rewardsClaimed
             };
 
@@ -57,8 +62,7 @@ namespace loyaltyFunctions
                 documentsOut.AddAsync(punch);
             }
 
-            return Task.FromResult(JsonConvert.SerializeObject(rewardDocument));
-
+            return Task.FromResult((IActionResult)new OkObjectResult(JsonConvert.SerializeObject(rewardDocument)));
         }
     }
 }

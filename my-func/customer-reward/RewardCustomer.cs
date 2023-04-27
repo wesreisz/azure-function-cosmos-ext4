@@ -1,35 +1,40 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using CosmosDBSamplesV2;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using CosmosDBSamplesV2;
-using Microsoft.Azure.Cosmos;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-// Example Post: curl -X POST http://localhost:7071/api/RewardCustomer/5599bb98-f8ae-4781-9e80-b27325d07bb6
 namespace loyaltyFunctions
 {
     public static class RewardCustomer
     {
         [FunctionName("RewardCustomer")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "PunchCustomer/{email}")] HttpRequest req,
-            [CosmosDB(
-                databaseName: "%CosmosDbConfigDatabaseName%",
-                containerName: "%CosmosDbConfigContainerName%",
-                Connection = "CosmosDbConnectionString")] IAsyncCollector<dynamic> documentsOut,
-            ILogger log,
-            String email)
+        public static Task<IActionResult> Run(
+    [HttpTrigger(AuthorizationLevel.Function, "get", Route = "RewardCustomer/{email}")] HttpRequest req,
+    //This lets the function write to CosmosDb- writes out the rewardDocument
+    [CosmosDB(
+        databaseName: "%CosmosDbConfigDatabaseName%",
+        containerName: "%CosmosDbConfigContainerName%",
+        Connection = "CosmosDbConnectionString")] out dynamic rewardDocument,
+        string email)
         {
-            log.LogInformation("C# HTTP trigger function RewardCustomer processed a request.");
 
+            rewardDocument = new
+            {
+                id = Guid.NewGuid().ToString(),
+                Type = "REWARD",
+                CustomerEmail = email,
+            };
 
-            return new OkObjectResult("Successfully updated Customer");
+            return Task.FromResult(JsonConvert.SerializeObject(rewardDocument));
 
         }
     }
