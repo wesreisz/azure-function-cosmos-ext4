@@ -37,7 +37,8 @@ namespace loyaltyFunctions
                     // create a random ID
                     id = System.Guid.NewGuid().ToString(),
                     Type = "PUNCH",
-                    CustomerEmail = punchEmail
+                    CustomerEmail = punchEmail,
+                    IsClaimed = false
                 });
 
                 string responseMessage = $"Punch added successfully to customer with {email}";

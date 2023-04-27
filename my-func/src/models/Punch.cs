@@ -13,6 +13,9 @@ namespace CosmosDBSamplesV2
         [JsonProperty("Type")]
         public string objectType { get; set; }
 
+        [JsonProperty("isClaimed")]
+        public bool IsClaimed { get; set; }
+
         [JsonProperty("_rid")]
         public string _rid { get; set; }
 

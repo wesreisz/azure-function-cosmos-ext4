@@ -29,6 +29,7 @@ namespace my_func.customergetpunches
 
             log.LogInformation("Triggering Get Customer");
             var totalPunches = 0;
+            // Each time a punch event is found totalPunches increments
             foreach (Punch punch in punches)
             {
                 log.LogInformation($"Found Customer: {punch.CustomerEmail} {punch.Id})");

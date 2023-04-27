@@ -18,49 +18,19 @@ namespace loyaltyFunctions
     {
         [FunctionName("RewardCustomer")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "RewardCustomer/{id}")] HttpRequest req,
-            [CosmosDB(
-                databaseName: "%CosmosDbConfigDatabaseName%",
-                containerName: "%CosmosDbConfigContainerName%",
-                Connection = "CosmosDbConnectionString",
-                SqlQuery = "SELECT * FROM c WHERE c.id = {id}")] IEnumerable<Customer> customers,
-            String id,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "PunchCustomer/{email}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "%CosmosDbConfigDatabaseName%",
                 containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString")] IAsyncCollector<dynamic> documentsOut,
-            ILogger log)
+            ILogger log,
+            String email)
         {
             log.LogInformation("C# HTTP trigger function RewardCustomer processed a request.");
 
-            var findId = $"{id}";
-            foreach (Customer customer in customers)
-            {
-                if (findId == customer.Id)
-                {
-                    log.LogInformation($"Found Customer: {customer.CustomerName} {customer.Id})");
 
-                    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                    dynamic data = JsonConvert.DeserializeObject(requestBody);
+            return new OkObjectResult("Successfully updated Customer");
 
-                    log.LogInformation(customer.CustomerName);
-
-                    customer.CustomerEmail = data.customerEmail;
-                    customer.CustomerName = data.customerName;
-                    customer.CustomerPhone = data.customerPhone;
-                        
-                    await documentsOut.AddAsync(new
-                    {
-                        customer.Id,
-                        customer.CustomerEmail,
-                        customer.CustomerName,
-                        customer.CustomerPhone
-                    });
-                    return new OkObjectResult("Successfully updated Customer");
-                }
-            }
-
-            return new NotFoundResult();
         }
     }
 }
