@@ -29,6 +29,7 @@ namespace loyaltyFunctions
             {
                 id = Guid.NewGuid().ToString(),
                 Type = "REWARD",
+                IsClaimed = false,
                 CustomerEmail = email,
             };
 
