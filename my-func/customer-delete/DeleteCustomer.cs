@@ -1,15 +1,10 @@
-using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Azure.Documents;
-using Newtonsoft.Json;
 using CosmosDBSamplesV2;
-using System.Collections.Generic;
 using Microsoft.Azure.Cosmos;
 
 //NOTE: PartitionId is required, but if you don't create a partitian id you set it equal to the id.
@@ -36,7 +31,7 @@ public static class DeleteCustomer
             Customer customer = new Customer(){Id=id};
             var result = await container.DeleteItemAsync<Customer>(customer.Id, new PartitionKey(customer.Id));         
         }
-        catch(Exception ex)
+        catch//(Exception ex)
         {
             //log.LogError("Error deleting item: " + ex.Message);
             return new NotFoundResult();

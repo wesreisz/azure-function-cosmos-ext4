@@ -21,7 +21,7 @@ namespace loyaltyFunctions
             ILogger log)
         {
             log.LogInformation("ClaimReward function processed a request.");
-
+            
             if (reward == null)
             {
                 return new OkObjectResult("No unclaimed rewards found.");
