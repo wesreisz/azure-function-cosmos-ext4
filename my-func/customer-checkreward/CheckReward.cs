@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 //example call:  curl "http://localhost:7071/api/CheckReward/Wes@wesleyreisz.com" 
-
+// This function checks punches to see if any new rewards can be generated and generates them.
 namespace loyaltyFunctions
 {
     public static class CheckReward
@@ -42,6 +42,7 @@ namespace loyaltyFunctions
     string email)
         {
             log.LogInformation("CheckReward processed a request.");
+            log.LogInformation($"Found {punches.Count()} unclaimed punches for customer {email}: {string.Join(",", punches.Select(p => p.Id))}");
             int punchesClaimed = punches.ToList().Count;
             //Might need to change this later- just counts punches/10- doesn't account for claimed rewards
             int rewardsClaimed = punchesClaimed / 10;

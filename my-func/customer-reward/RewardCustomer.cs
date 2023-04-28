@@ -19,12 +19,12 @@ namespace loyaltyFunctions
         [FunctionName("RewardCustomer")]
         public static Task<IActionResult> Run(
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "RewardCustomer/{email}")] HttpRequest req,
-    //This lets the function write to CosmosDb- writes out the rewardDocument
-    [CosmosDB(
-        databaseName: "%CosmosDbConfigDatabaseName%",
-        containerName: "%CosmosDbConfigContainerName%",
-        Connection = "CosmosDbConnectionString")] out dynamic rewardDocument,
-        string email)
+//This lets the function write to CosmosDb- writes out the rewardDocument
+[CosmosDB(
+    databaseName: "%CosmosDbConfigDatabaseName%",
+    containerName: "%CosmosDbConfigContainerName%",
+    Connection = "CosmosDbConnectionString")] out dynamic rewardDocument,
+    string email)
         {
 
             rewardDocument = new
@@ -34,8 +34,7 @@ namespace loyaltyFunctions
                 CustomerEmail = email,
             };
 
-            return Task.FromResult(JsonConvert.SerializeObject(rewardDocument));
-
+            return Task.FromResult((IActionResult)new OkObjectResult(JsonConvert.SerializeObject(rewardDocument)));
         }
     }
 }
