@@ -21,6 +21,7 @@
     <None Remove="customer-getpunches\" />
     <None Remove="customer-claimreward\" />
     <None Remove="customer-checkreward\" />
+    <None Remove="customer-rewardcount\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -39,5 +40,6 @@
     <Folder Include="customer-claimreward\" />
     <Folder Include="customer-checkreward\" />
     <Folder Include="customer-reward\" />
+    <Folder Include="customer-rewardcount\" />
   </ItemGroup>
 </Project>

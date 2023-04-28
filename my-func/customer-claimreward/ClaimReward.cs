@@ -21,7 +21,7 @@ namespace loyaltyFunctions
                 containerName: "%CosmosDbConfigContainerName%",
                 Connection = "CosmosDbConnectionString",
                 SqlQuery = "SELECT TOP 1 * FROM c WHERE c.Type = 'REWARD' AND c.IsClaimed = false AND c.CustomerEmail = {email}")]  IEnumerable<Reward> rewards,
-                    [CosmosDB(
+            [CosmosDB(
             databaseName: "%CosmosDbConfigDatabaseName%",
             containerName: "%CosmosDbConfigContainerName%",
             Connection = "CosmosDbConnectionString")] IAsyncCollector<Reward> documentsOut,
