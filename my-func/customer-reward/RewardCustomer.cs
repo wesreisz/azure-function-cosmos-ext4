@@ -20,10 +20,10 @@ namespace loyaltyFunctions
     databaseName: "%CosmosDbConfigDatabaseName%",
     containerName: "%CosmosDbConfigContainerName%",
     Connection = "CosmosDbConnectionString")] out dynamic rewardDocument,
-    string email)
+    string email,
+    ILogger log)
         {
-            //log doesn't exist in this context??
-            //log.LogInformation("RewardCustomer function processed a request.");
+            log.LogInformation("RewardCustomer function processed a request.");
 
             rewardDocument = new
             {
