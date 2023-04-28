@@ -5,6 +5,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+
 
 namespace loyaltyFunctions
 {
@@ -20,6 +22,8 @@ namespace loyaltyFunctions
     Connection = "CosmosDbConnectionString")] out dynamic rewardDocument,
     string email)
         {
+            //log doesn't exist in this context??
+            //log.LogInformation("RewardCustomer function processed a request.");
 
             rewardDocument = new
             {
