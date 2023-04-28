@@ -25,42 +25,21 @@ namespace loyaltyFunctions
         databaseName: "%CosmosDbConfigDatabaseName%",
         containerName: "%CosmosDbConfigContainerName%",
         Connection = "CosmosDbConnectionString",
-        SqlQuery = "SELECT * FROM c WHERE c.Type = 'PUNCH' AND c.CustomerEmail = {email} AND c.IsClaimed = false")]
+        SqlQuery = "SELECT * FROM c WHERE c.Type = 'PUNCH' AND c.CustomerEmail = {email}")]
     IEnumerable<Punch> punches,
-    //This lets the function write to CosmosDb- writes out the rewardDocument
-    [CosmosDB(
-        databaseName: "%CosmosDbConfigDatabaseName%",
-        containerName: "%CosmosDbConfigContainerName%",
-        Connection = "CosmosDbConnectionString")] dynamic rewardDocument,
-    // This lets the function to collect a bunch of Punch objects and update them
-    [CosmosDB(
-        databaseName: "%CosmosDbConfigDatabaseName%",
-        containerName: "%CosmosDbConfigContainerName%",
-        Connection = "CosmosDbConnectionString")] IAsyncCollector<Punch> documentsOut,
     ILogger log,
     string email)
+
         {
-            log.LogInformation("CheckReward processed a request.");
-            log.LogInformation($"Found {punches.Count()} unclaimed punches for customer {email}: {string.Join(",", punches.Select(p => p.Id))}");
-            int punchesClaimed = punches.ToList().Count;
-            //Might need to change this later- just counts punches/10- doesn't account for claimed rewards
-            int rewardsClaimed = punchesClaimed / 10;
-
-            rewardDocument = new
             {
-                id = Guid.NewGuid().ToString(),
-                Type = "REWARD",
-                CustomerEmail = email,
-            };
+                log.LogInformation("CheckReward processed a request.");
+                log.LogInformation($"Found {punches.Count()} unclaimed punches for customer {email}: {string.Join(",", punches.Select(p => p.Id))}");
+                int punchesClaimed = punches.ToList().Count;
+                //Might need to change this later- just counts punches/10- doesn't account for claimed rewards
+                int rewardsClaimed = punchesClaimed / 10;
 
-            // Update the punches to mark them as claimed.
-            foreach (var punch in punches)
-            {
-                punch.IsClaimed = true;
-                documentsOut.AddAsync(punch);
+                return Task.FromResult((IActionResult)new OkObjectResult("Punches returned"));
             }
-
-            return Task.FromResult((IActionResult)new OkObjectResult(JsonConvert.SerializeObject(rewardDocument)));
         }
     }
 }
