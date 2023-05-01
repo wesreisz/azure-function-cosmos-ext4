@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 //example call:  curl "http://localhost:7071/api/CheckReward/Wes@wesleyreisz.com" 
 // This function checks punches to see if any new rewards can be generated and generates them.
-// More like Update reward, need another function to count the number of rewards
 namespace loyaltyFunctions
 {
     public static class CheckReward

@@ -21,7 +21,7 @@ namespace loyaltyFunctions
             ILogger log,
             String email)
         {
-            log.LogInformation("C# HTTP trigger function PunchCustomerCard processed a request.");
+            log.LogInformation("Function PunchCustomerCard processed a request.");
 
             string punchEmail = $"{email}";
 

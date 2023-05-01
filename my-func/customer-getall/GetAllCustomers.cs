@@ -8,6 +8,8 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
+// Example Post: curl http://localhost:7071/api/GetAllCustomers/
+
 namespace loyaltyFunctions
 {
     public static class GetAllCustomers
