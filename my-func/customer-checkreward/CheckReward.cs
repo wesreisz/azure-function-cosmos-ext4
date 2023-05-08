@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-//example call:  curl "http://localhost:7071/api/CheckReward/Wes@wesleyreisz.com" 
+//example call:  curl http://localhost:7071/api/CheckReward/justin@wesleyreisz.com
 // This function checks punches to see if any new rewards can be generated and generates them.
 namespace loyaltyFunctions
 {
@@ -59,6 +59,7 @@ namespace loyaltyFunctions
                     {
                         id = Guid.NewGuid().ToString(),
                         Type = "REWARD",
+                        isClaimed = false,
                         CustomerEmail = email
                     });
 

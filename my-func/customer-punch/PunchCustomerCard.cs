@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-//Example Post: curl http://localhost:7071/api/PunchCustomerCard/wes%40wesleyreisz.com
+//Example Post: curl http://localhost:7071/api/PunchCustomerCard/justin%40wesleyreisz.com
 namespace loyaltyFunctions
 {
     public static class PunchCustomerCard
