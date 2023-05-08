@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// Example: curl 
+// Example: curl http://localhost:7071/api/RewardCount/justin%40wesleyreisz.com
 
 namespace loyaltyFunctions
 {
@@ -28,7 +28,7 @@ namespace loyaltyFunctions
             log.LogInformation("RewardCount function processed a request.");
 
             // Return the count of unclaimed rewards for the given customer
-            return new OkObjectResult($"Customer {email} has {unclaimedRewards.Count()} unclaimed rewards.");
+            return new OkObjectResult(unclaimedRewards.Count());
         }
     }
 }
